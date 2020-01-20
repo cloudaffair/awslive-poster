@@ -1,0 +1,1 @@
+require 'awslive-poster/awslive_poster'
