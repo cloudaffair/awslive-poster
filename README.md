@@ -1,8 +1,8 @@
 # Awslive::Poster
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/awslive/poster`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Welcome to your awslive-poster gem!. 
+Currently there is not easy and cost effective ay to get the poster image URL for the AWS medialive channel.
+This utility auto computes the poster URL for the AWS media channel and creates a presigned URL fto access the poster image.
 
 ## Installation
 
@@ -14,7 +14,7 @@ gem 'awslive-poster'
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
 Or install it yourself as:
 
@@ -22,8 +22,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+#### Awslive Poster Initialisation
+    
+    require 'awslive-poster'
+    
+    awslive_poster = Awslive::Poster.new(channel_id)
 
+    awslive_poster.get_url
+    
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -32,7 +38,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/awslive-poster. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/cloudaffair/awslive-poster. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
