@@ -1,8 +1,9 @@
 # Awslive::Poster
+[![Gem Version](https://badge.fury.io/rb/awslive-poster.svg)](https://badge.fury.io/rb/awslive-poster)
 
 Welcome to your awslive-poster gem!. 
-Currently there is not easy and cost effective ay to get the poster image URL for the AWS medialive channel.
-This utility auto computes the poster URL for the AWS media channel and creates a presigned URL fto access the poster image.
+Currently there is no easy and cost effective way to get the poster image URL for a AWS medialive channel.
+This utility auto computes the poster URL for a AWS media channel and creates a presigned URL to access poster image.
 
 ## Installation
 
