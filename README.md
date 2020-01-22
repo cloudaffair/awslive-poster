@@ -9,6 +9,20 @@ This utility auto computes the poster URL for a AWS media channel and creates a 
 
 ![alt text](https://github.com/cloudaffair/awslive-poster/blob/master/misc/highlevel-view.png)
 
+* `1` Cloudwatch Events pushed for Channel State change.
+* `2` Cloudwatch Rule for channel state change triggers Channel monitor Lambda
+* `3` Lambda identifies the channel Id and its start Time.
+* `4` Records the Start time of the channel in a Media channel Tag with name `channel_start_time`
+
+* `Z` Media Channel is configured for a framecapture output group that pushes the captured images onto configured S3 bucket
+
+* `A` `aws-poster` gem when invoked for `get_url`, inspects the channel and identifies the channel start time using the tag `channel_start_time` provisioned.
+* `B` Once the start time is identified, `aws-poster` gem computes the sequential counter and constructs the current preview presigned URL.
+* `C` Returns the presigned URL constructed.
+
+## Deploy the channel Monitor Lambda using Terraform.
+
+
 ## Installation
 
 Add this line to your application's Gemfile:
