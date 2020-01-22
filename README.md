@@ -7,7 +7,7 @@ This utility auto computes the poster URL for a AWS media channel and creates a 
 
 ## High-Level System View
 
-![alt text](https://github.com/ooyala/awslive-poster/blob/master/misc/highlevel-view.png)
+![alt text](https://github.com/cloudaffair/awslive-poster/blob/master/misc/highlevel-view.png)
 
 ## Installation
 
