@@ -5,6 +5,10 @@ Welcome to your awslive-poster gem!.
 Currently there is no easy and cost effective way to get the poster image URL for a AWS medialive channel.
 This utility auto computes the poster URL for a AWS media channel and creates a presigned URL to access poster image.
 
+## High-Level System View
+
+![alt text](https://github.com/ooyala/awslive-poster/blob/master/misc/highlevel-view.png)
+
 ## Installation
 
 Add this line to your application's Gemfile:
