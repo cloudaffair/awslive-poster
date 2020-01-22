@@ -16,14 +16,19 @@ This utility auto computes the poster URL for a AWS media channel and creates a 
 
 * `Z` Media Channel is configured for a framecapture output group that pushes the captured images onto configured S3 bucket
 
-* `A` `aws-poster` gem when invoked for `get_url`, inspects the channel and identifies the channel start time using the tag `channel_start_time` provisioned.
-* `B` Once the start time is identified, `aws-poster` gem computes the sequential counter and constructs the current preview presigned URL.
+* `A` `awslive-poster` gem when invoked for `get_url`, inspects the channel and identifies the channel start time using the tag `channel_start_time` provisioned.
+* `B` Once the start time is identified, `awslive-poster` gem computes the sequential counter and constructs the current preview presigned URL.
 * `C` Returns the presigned URL constructed.
 
-## Deploy the channel Monitor Lambda using Terraform.
+## Prerequisites
 
+1. Need AWS account with Key and secret holding required privileges.
+2. Terraform installed.
+3. Ruby 2.5 or later.
 
-## Installation
+## Install channel Monitor Lambda using Terraform.
+
+## Installation of Gem
 
 Add this line to your application's Gemfile:
 

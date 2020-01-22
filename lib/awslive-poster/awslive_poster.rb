@@ -10,6 +10,8 @@ module Awslive
     class PosterImageDoesNotExist < StandardError; end
     class NoStartTimeInTag < StandardError; end
 
+    MAX_CHANNEL_START_TIME = 2 * 60
+
     def initialize(channel_id)
       credentials = Aws::SharedCredentials.new
       if credentials.set?
@@ -20,13 +22,26 @@ module Awslive
         @s3 = Aws::S3::Resource.new
       end
       @channel_id = channel_id
+      @last_computed_time = nil
+      @last_preview_url = nil
+      @interval = nil
     end
 
     def get_url(channel_info = nil)
+      if !@last_computed_time.nil? && !@last_preview_url.nil? && !@interval.nil?
+        threshold_gap = @interval > MAX_CHANNEL_START_TIME ? MAX_CHANNEL_START_TIME : @interval
+        current_time = Time.now.to_i
+        if current_time - @last_computed_time < threshold_gap
+          # quick fetch hence returning already computed preview URL.
+          puts "returning from cache"
+          return @last_preview_url
+        end
+      end
       preview_url = nil
       channel_info = @medialiveclient.describe_channel({ :channel_id => "#{@channel_id}" }) if channel_info.nil?
       channel_state = channel_info[:state]
       if channel_state == "RUNNING"
+        @last_computed_time = Time.now.to_i
         out_group = get_framecapture_group(channel_info["encoder_settings"])
         raise NoFrameCaptureOutputGroup.new("Framecapture output group should be configured!") if out_group.nil?
         start_time = get_channel_start_time(channel_info)
@@ -35,8 +50,8 @@ module Awslive
         url = get_dest_url(dest_id, channel_info)
         uri = URI(url)
         modifier = get_framecapture_modifier(out_group)
-        interval = get_framecapture_interval(out_group, channel_info)
-        seq_counter = compute_index(start_time, interval)
+        @interval = get_framecapture_interval(out_group, channel_info)
+        seq_counter = compute_index(start_time, @interval)
         suffix = uri.path[1..-1]
         bucket = @s3.bucket("#{uri.host}")
         obj = bucket.object("#{suffix}#{modifier}.#{seq_counter}.jpg")
@@ -48,6 +63,7 @@ module Awslive
       else
         raise InvalidChannelState.new("Channel Need to be in running state!, current state is #{channel_state}")
       end
+      @last_preview_url = preview_url
       preview_url
     end
 
@@ -132,4 +148,3 @@ module Awslive
     end
   end
 end
-
