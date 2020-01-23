@@ -5,7 +5,7 @@ Welcome to your awslive-poster gem!.
 Currently there is no easy and cost effective way to get the poster image URL for a AWS medialive channel.
 This utility auto computes the poster URL for a AWS media channel and creates a presigned URL to access poster image.
 
-## Possible Solution and it lacuna
+## Possible Solution and it's lacuna
 
 ![alt text](https://github.com/cloudaffair/awslive-poster/blob/master/misc/lacuna.png)
 
@@ -22,7 +22,7 @@ This utility auto computes the poster URL for a AWS media channel and creates a 
 
 `You land up spinning more AWS resources and also increase your lambda usage cost`
 
-`awslive-poster` provide a simple low latency and cost effective solution to fetch the preview image for the MediaLive channel
+###`awslive-poster` provide a simple low latency and cost effective solution to fetch the preview image for the MediaLive channel
 
 ## High-Level System View
 
