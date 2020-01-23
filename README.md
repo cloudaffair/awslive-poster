@@ -25,9 +25,21 @@ This utility auto computes the poster URL for a AWS media channel and creates a 
 1. Need AWS account with Key and secret holding required privileges.
 2. Terraform installed.
 3. Ruby 2.5 or later.
+4. Git commandline
 
 ## Install channel Monitor Lambda using Terraform.
-
+    
+    $ git clone https://github.com/cloudaffair/awslive-poster.git
+    
+    $ cd awslive-poster/awslive-lambda-channelmonitor/deploy
+    
+    $ terraform init
+    
+    $ terraform plan
+    
+    $ terraform apply
+    
+    
 ## Installation of Gem
 
 Add this line to your application's Gemfile:
@@ -53,7 +65,15 @@ Or install it yourself as:
     awslive_poster = Awslive::Poster.new(channel_id)
 
     awslive_poster.get_url
+ 
+## Install channel Monitor Lambda using Terraform.
+
+    $ terraform destroy
+
+## Uninstall awlive-poster gem
     
+    $ gem uninstall awslive-poster
+   
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

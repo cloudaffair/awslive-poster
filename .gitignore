@@ -7,4 +7,8 @@
 /spec/reports/
 /tmp/
 /.idea
-
+/awslive-lambda-channelmonitor/.bundle/
+/awslive-lambda-channelmonitor/deploy/terraform/.terraform/
+/awslive-lambda-channelmonitor/*.zip
+/awslive-lambda-channelmonitor/vendor
+/awslive-lambda-channelmonitor/deploy/terraform/*tfstate*
