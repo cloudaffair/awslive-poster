@@ -13,7 +13,7 @@ This utility auto computes the poster URL for a AWS media channel and creates a 
 
 * You can always try to scan the S3 objects to know the Latest image created to fetch it.
 
-`Fetching preview image Latency increases as the number of object grows in S3`
+`High Latency While fetching the Preview image as the number of object grows in S3`
 
 #### Method - 2
 
