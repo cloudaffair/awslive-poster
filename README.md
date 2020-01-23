@@ -5,6 +5,25 @@ Welcome to your awslive-poster gem!.
 Currently there is no easy and cost effective way to get the poster image URL for a AWS medialive channel.
 This utility auto computes the poster URL for a AWS media channel and creates a presigned URL to access poster image.
 
+## Possible Solution and it lacuna
+
+![alt text](https://github.com/cloudaffair/awslive-poster/blob/master/misc/lacuna.png)
+
+#### Method - 1
+
+* You can always try to scan the S3 objects to know the Latest image created to fetch it.
+
+`Fetching preview image Latency increases as the number of object grows in S3`
+
+#### Method - 2
+
+* You can subcribe for the cloud watch S3 Put Events
+* Trigger a Lambda to keep track on the Latest object or move the object to specific static S3 location
+
+`You land up spinning more AWS resources and also increase your lambda usage cost`
+
+`awslive-poster` provide a simple low latency and cost effective solution to fetch the preview image for the MediaLive channel
+
 ## High-Level System View
 
 ![alt text](https://github.com/cloudaffair/awslive-poster/blob/master/misc/highlevel-view.png)
