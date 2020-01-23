@@ -22,7 +22,7 @@ This utility auto computes the poster URL for a AWS media channel and creates a 
 
 `You land up spinning more AWS resources and also increase your lambda usage cost`
 
-###`awslive-poster` provide a simple low latency and cost effective solution to fetch the preview image for the MediaLive channel
+### Awslive::Poster provides a simple low latency and cost effective solution to fetch the preview image for the MediaLive channel
 
 ## High-Level System View
 
