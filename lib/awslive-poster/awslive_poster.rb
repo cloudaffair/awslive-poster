@@ -12,9 +12,13 @@ module Awslive
 
     MAX_CHANNEL_START_TIME = 2 * 60
 
-    def initialize(channel_id)
+    def initialize(channel_id, access_key=nil , access_secret =nil, region = nil)
       credentials = Aws::SharedCredentials.new
-      if credentials.set?
+      if !access_key.nil? && !access_secret.nil?
+        aws_region = 'us-east-1' if region.nil?
+        @medialiveclient = Aws::MediaLive::Client.new( :access_key_id => access_key, :secret_access_key => access_secret, :region => aws_region )
+        @s3 = Aws::S3::Resource.new( :access_key_id => access_key, :secret_access_key => access_secret, :region => aws_region )
+      elsif credentials.set?
         @medialiveclient = Aws::MediaLive::Client.new(:credentials => credentials)
         @s3 = Aws::S3::Resource.new(:credentials => credentials)
       else
