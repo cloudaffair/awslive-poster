@@ -76,7 +76,7 @@ module Awslive
       channel_start_time = Time.iso8601(start_time).to_i
       current_time = Time.now.utc.to_i
       diff_time = current_time - channel_start_time
-      image_index = (diff_time / interval.to_i).to_i
+      image_index = (diff_time / interval.to_i).to_i.round
       index =  image_index.to_s.rjust(5,'0')
       index
     end
