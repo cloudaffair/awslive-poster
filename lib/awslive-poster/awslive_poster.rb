@@ -33,15 +33,6 @@ module Awslive
     end
 
     def get_url(channel_info = nil)
-      if !@last_computed_time.nil? && !@last_preview_url.nil? && !@interval.nil?
-        threshold_gap = @interval > MAX_CHANNEL_START_TIME ? MAX_CHANNEL_START_TIME : @interval
-        current_time = Time.now.to_i
-        if current_time - @last_computed_time < threshold_gap
-          # quick fetch hence returning already computed preview URL.
-          puts "returning from cache"
-          return @last_preview_url
-        end
-      end
       preview_url = nil
       channel_info = @medialiveclient.describe_channel({ :channel_id => "#{@channel_id}" }) if channel_info.nil?
       channel_state = channel_info[:state]
@@ -60,23 +51,33 @@ module Awslive
         suffix = uri.path[1..-1]
         bucket = @s3.bucket("#{uri.host}")
         obj = bucket.object("#{suffix}#{modifier}.#{seq_counter}.jpg")
-        if obj.exists?
-          preview_url = obj.presigned_url(:get)
-        else
-          raise PosterImageDoesNotExist.new("Poster Image #{suffix}#{modifier}.#{seq_counter}.jpg Does not exist!")
+        preview_url = get_presigned_url(obj)
+        if preview_url.nil?
+          puts "seems delay in generating posters; giving a pause for fetching!!"
+          sleep (@interval / 2 ).round
+          preview_url = get_presigned_url(obj)
         end
+        raise PosterImageDoesNotExist.new("Poster Image #{suffix}#{modifier}.#{seq_counter}.jpg Does not exist!") if preview_url.nil?
       else
         raise InvalidChannelState.new("Channel Need to be in running state!, current state is #{channel_state}")
       end
-      @last_preview_url = preview_url
       preview_url
+    end
+
+    def get_presigned_url(obj)
+      url = nil
+      puts "Fetching the object at #{Time.now}"
+      if obj.exists?
+        url = obj.presigned_url(:get)
+      end
+      url
     end
 
     def compute_index(start_time, interval)
       channel_start_time = Time.iso8601(start_time).to_i
       current_time = Time.now.utc.to_i
       diff_time = current_time - channel_start_time
-      image_index = (diff_time / interval.to_i).to_i.round
+      image_index = (diff_time / interval.to_i).round
       index =  image_index.to_s.rjust(5,'0')
       index
     end
