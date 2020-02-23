@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    awslive-poster (0.1.6)
+    awslive-poster (0.1.7)
       aws-sdk-medialive (~> 1.40)
       aws-sdk-s3 (~> 1.40)
 
