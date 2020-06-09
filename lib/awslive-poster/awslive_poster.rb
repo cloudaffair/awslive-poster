@@ -16,14 +16,16 @@ module Awslive
       credentials = Aws::SharedCredentials.new
       if !access_key.nil? && !access_secret.nil?
         aws_region = region.nil? ? 'us-east-1' : region
+        puts "AWS REgion #{aws_region}"
         @medialiveclient = Aws::MediaLive::Client.new( :access_key_id => access_key, :secret_access_key => access_secret, :region => aws_region )
-        @s3 = Aws::S3::Resource.new( :access_key_id => access_key, :secret_access_key => access_secret, :region => aws_region )
+        client = Aws::S3::Client.new(access_key_id: access_key, secret_access_key: access_secret, region: 'us-east-1')
+        @s3 = Aws::S3::Resource.new(client: client)
       elsif credentials.set?
         @medialiveclient = Aws::MediaLive::Client.new(:credentials => credentials)
-        @s3 = Aws::S3::Resource.new(:credentials => credentials)
+        @s3 = Aws::S3::Client.new(:credentials => credentials)
       else
         @medialiveclient = Aws::MediaLive::Client.new
-        @s3 = Aws::S3::Resource.new
+        @s3 = Aws::S3::Client.new
       end
       @channel_id = channel_id
       @last_computed_time = nil
@@ -50,8 +52,9 @@ module Awslive
         seq_counter = compute_index(start_time, @interval)
         suffix = uri.path[1..-1]
         bucket = @s3.bucket("#{uri.host}")
+        puts "object prefix #{suffix}#{modifier}.#{seq_counter}.jpg"
         obj = bucket.object("#{suffix}#{modifier}.#{seq_counter}.jpg")
-        preview_url = get_presigned_url(obj)
+        preview_url = get_presigned_url(obj) rescue nil
         if preview_url.nil?
           puts "seems delay in generating posters; giving a pause for fetching!!"
           sleep (@interval / 2 ).round
@@ -67,8 +70,9 @@ module Awslive
     def get_presigned_url(obj)
       url = nil
       puts "Fetching the object at #{Time.now}"
+      puts "Object #{obj}"
       if obj.exists?
-        url = obj.presigned_url(:get)
+        url = obj.presigned_url(:get) rescue nil
       end
       url
     end
