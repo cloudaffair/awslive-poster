@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.files         = Dir['lib/**/*.rb']
 
   spec.add_development_dependency "bundler", "~> 2.0"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rake", "~> 13.0"
   spec.add_runtime_dependency 'aws-sdk-medialive', '~>1.40'
   spec.add_runtime_dependency 'aws-sdk-s3', '~>1.40'
 end
