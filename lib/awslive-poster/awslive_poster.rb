@@ -49,15 +49,17 @@ module Awslive
         uri = URI(url)
         modifier = get_framecapture_modifier(out_group)
         @interval = get_framecapture_interval(out_group, channel_info)
-        seq_counter = compute_index(start_time, @interval)
+        index, seq_counter = compute_index(start_time, @interval)
         suffix = uri.path[1..-1]
         bucket = @s3.bucket("#{uri.host}")
         puts "object prefix #{suffix}#{modifier}.#{seq_counter}.jpg"
         obj = bucket.object("#{suffix}#{modifier}.#{seq_counter}.jpg")
         preview_url = get_presigned_url(obj) rescue nil
         if preview_url.nil?
-          puts "seems delay in generating posters; giving a pause for fetching!!"
-          sleep (@interval / 2 ).round
+          puts "seems delay in generating posters; decrementing the counter!!"
+          index = index - 1
+          seq_counter = index.to_s.rjust(5,'0')
+          obj = bucket.object("#{suffix}#{modifier}.#{seq_counter}.jpg")
           preview_url = get_presigned_url(obj)
         end
         raise PosterImageDoesNotExist.new("Poster Image #{suffix}#{modifier}.#{seq_counter}.jpg Does not exist!") if preview_url.nil?
@@ -83,7 +85,7 @@ module Awslive
       diff_time = current_time - channel_start_time
       image_index = (diff_time / interval.to_i).round
       index =  image_index.to_s.rjust(5,'0')
-      index
+      return image_index, index
     end
 
     def get_channel_start_time(channel_info)
